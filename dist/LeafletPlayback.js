@@ -260,6 +260,7 @@ L.Playback.Track = L.Class.extend({
                 return;
             }
 
+            this._status[t]=sampleStatus[0];
             // interpolate first tick if t not a tick time
             if (tmod !== 0) {
                 rem = tickLen - tmod;
@@ -267,7 +268,7 @@ L.Playback.Track = L.Class.extend({
                 t += rem;
                 this._ticks[t] = this._interpolatePoint(currSample, nextSample, ratio);
 				this._orientations[t] = this._directionOfPoint(currSample,nextSample);
-				this._status[t]=sampleStatus[currSample];
+				
                 previousOrientation = this._orientations[t];
             } else {
                 this._ticks[t] = currSample;
@@ -283,6 +284,7 @@ L.Playback.Track = L.Class.extend({
                 this._ticks[t] = this._interpolatePoint(currSample, nextSample, ratio);
 				this._orientations[t] = this._directionOfPoint(currSample,nextSample);
                 previousOrientation = this._orientations[t];
+                this._status[t]=sampleStatus[0];
                 t += tickLen;
             }
 
@@ -292,7 +294,7 @@ L.Playback.Track = L.Class.extend({
                 nextSample = samples[i + 1];
                 t = currSampleTime = sampleTimes[i];
                 nextSampleTime = sampleTimes[i + 1];
-                this._status[t]=sampleStatus[currSample];
+                this._status[t]=sampleStatus[i];
                 tmod = t % tickLen;
                 if (tmod !== 0 && nextSampleTime) {
                     rem = tickLen - tmod;
@@ -318,7 +320,7 @@ L.Playback.Track = L.Class.extend({
                 t += tickLen;
                 while (t < nextSampleTime) {
                     ratio = (t - currSampleTime) / (nextSampleTime - currSampleTime);
-                    this._status[t]=sampleStatus[currSample];
+                    this._status[t]=sampleStatus[i];
                     if (nextSampleTime - currSampleTime > options.maxInterpolationTime){
                         this._ticks[t] = currSample;
                         
