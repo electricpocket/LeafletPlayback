@@ -33,6 +33,7 @@ L.Playback.Util = L.Class.extend({
       var tms = time / 1000;
       var dec = (tms - Math.floor(tms)).toFixed(2).slice(1);
       var mer = 'AM';
+      
       if (h > 11) {
         h %= 12;
         mer = 'PM';
@@ -40,7 +41,16 @@ L.Playback.Util = L.Class.extend({
       if (h === 0) h = 12;
       if (m < 10) m = '0' + m;
       if (s < 10) s = '0' + s;
-      return h + ':' + m + ':' + s + dec + ' ' + mer;
+      
+      tzo = -d.getTimezoneOffset(),
+      dif = tzo >= 0 ? '+' : '-',
+      pad = function(num) {
+          var norm = Math.abs(Math.floor(num));
+          return (norm < 10 ? '0' : '') + norm;
+      };
+      
+      return h + ':' + m + ':' + s + dec + ' ' + mer + dif + pad(tzo / 60) 
+      + ':' + pad(tzo % 60);;
     },
 
     ParseGPX: function(gpx) {
