@@ -458,9 +458,9 @@ L.Playback.Track = L.Class.extend({
             if (timestamp < this._startTime)
                 timestamp = this._startTime;
             //return this._orientations[timestamp];
-            if (this._status[timestamp].hdg >= 0 && |this._status[timestamp].hdg <  360)
+            if (this._status[timestamp].hdg >= 0 && this._status[timestamp].hdg <  360)
             	return this._status[timestamp].hdg;
-            else if (this._status[timestamp].sog >= 0.2 && this._status[timestamp].cog >= 0 && |this._status[timestamp].cog <  360)
+            else if (this._status[timestamp].sog >= 0.2 && this._status[timestamp].cog >= 0 && this._status[timestamp].cog <  360)
             	return this._status[timestamp].cog;
             else return this._orientations[timestamp];
             	
