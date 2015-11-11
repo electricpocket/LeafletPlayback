@@ -229,8 +229,10 @@ L.Playback.Track = L.Class.extend({
             this._ticks = [];
             this._marker = null;
 			this._orientations = [];
+			this._status = [];
 			
             var sampleTimes = geoJSON.properties.time;
+            var sampleStatus = geoJSON.properties.status;//associative array of hdng,sog,cog and status
 			
             this._orientIcon = options.orientIcons;
             var previousOrientation;
@@ -252,6 +254,7 @@ L.Playback.Track = L.Class.extend({
                     t += tickLen - tmod;
                 this._ticks[t] = samples[0];
 				this._orientations[t] = 0;
+				this._status[t]=sampleStatus[0];
                 this._startTime = t;
                 this._endTime = t;
                 return;
@@ -264,10 +267,12 @@ L.Playback.Track = L.Class.extend({
                 t += rem;
                 this._ticks[t] = this._interpolatePoint(currSample, nextSample, ratio);
 				this._orientations[t] = this._directionOfPoint(currSample,nextSample);
+				this._status[t]=sampleStatus[currSample];
                 previousOrientation = this._orientations[t];
             } else {
                 this._ticks[t] = currSample;
 				this._orientations[t] = this._directionOfPoint(currSample,nextSample);
+				this._status[t]=sampleStatus[currSample];
                 previousOrientation = this._orientations[t];
             }
 
@@ -287,7 +292,7 @@ L.Playback.Track = L.Class.extend({
                 nextSample = samples[i + 1];
                 t = currSampleTime = sampleTimes[i];
                 nextSampleTime = sampleTimes[i + 1];
-
+                this._status[t]=sampleStatus[currSample];
                 tmod = t % tickLen;
                 if (tmod !== 0 && nextSampleTime) {
                     rem = tickLen - tmod;
@@ -313,7 +318,7 @@ L.Playback.Track = L.Class.extend({
                 t += tickLen;
                 while (t < nextSampleTime) {
                     ratio = (t - currSampleTime) / (nextSampleTime - currSampleTime);
-                    
+                    this._status[t]=sampleStatus[currSample];
                     if (nextSampleTime - currSampleTime > options.maxInterpolationTime){
                         this._ticks[t] = currSample;
                         
@@ -451,7 +456,18 @@ L.Playback.Track = L.Class.extend({
                timestamp = this._endTime;
             if (timestamp < this._startTime)
                 timestamp = this._startTime;
-            return this._orientations[timestamp];
+            //return this._orientations[timestamp];
+            return this._status[timestamp].hdg;
+        },
+        
+        statusAtTime: function(timestamp)
+        {
+            
+            if (timestamp > this._endTime)
+               timestamp = this._endTime;
+            if (timestamp < this._startTime)
+                timestamp = this._startTime;
+            return this._status[timestamp];
         },
         
         setMarker : function(timestamp, options){
