@@ -133,6 +133,15 @@ L.Playback.MoveableMarker = L.Marker.extend({
                 console.log("Label binding requires leaflet-label (https://github.com/Leaflet/Leaflet.label)");
             }
         }
+        
+        
+        
+        this.on("popupopen",function(e){
+
+        	var mmsi = this.feature.properties.ship.mmsi;
+        	var shipImgUrl = "http://boatbeaconapp.com/web-shipheaderfetch.php?width=150&height=75&userSubmit=0&mmsi="+mmsi+"&user=1234&registered=1";
+        }
+        
     },
     
     getPopupContent: function() {
@@ -159,7 +168,11 @@ L.Playback.MoveableMarker = L.Marker.extend({
         
         if (this._popup) {
         	if (mystatus!== null && typeof( mystatus) !== 'undefined' && typeof( mystatus.sog)  !== 'undefined' )
+        	{ 
+        		var heading= mystatus.hdg;
+        		
         		this._popup.setContent(this.getPopupContent() + this._latlng.toString() + "<br>sog:" +  mystatus.sog +  "hdg:" + mystatus.hdg + "cog:" + mystatus.cog);
+        	}
         	else
         		this._popup.setContent(this.getPopupContent() + this._latlng.toString());
         }    
