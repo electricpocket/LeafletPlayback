@@ -23,6 +23,7 @@ L.Playback.Util = L.Class.extend({
 
     DateStr: function(time) {
       return new Date(time).toDateString();
+      //return new Date(time).toUTCString(); //if you want UTC time
     },
 
     TimeStr: function(time) {
