@@ -156,8 +156,12 @@ L.Playback.MoveableMarker = L.Marker.extend({
             }
         }
         this.setLatLng(latLng);
+        this.setMayStatus(mystatus);
         if (this._popup) {
-            this._popup.setContent(this.getPopupContent() + this._latlng.toString() + "\nsog=" +  mystatus.sog);
+        	if (typeof this._myStatus.sog  !== 'undefined' )
+        		this._popup.setContent(this.getPopupContent() + this._latlng.toString() + "\nsog=" +  this._myStatus.sog);
+        	else
+        		this._popup.setContent(this.getPopupContent() + this._latlng.toString());
         }    
     },
     
