@@ -159,7 +159,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
         
         if (this._popup) {
         	if (mystatus!== null && typeof( mystatus) !== 'undefined' && typeof( mystatus.sog)  !== 'undefined' )
-        		this._popup.setContent(this.getPopupContent() + this._latlng.toString() + "\nsog=" +  mystatus.sog);
+        		this._popup.setContent(this.getPopupContent() + this._latlng.toString() + "<br>sog:" +  mystatus.sog +  "hdg:" + mystatus.hdg + "cog:" + mystatus.cog);
         	else
         		this._popup.setContent(this.getPopupContent() + this._latlng.toString());
         }    
