@@ -143,6 +143,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
         	$.get(shipImgUrl, function(data){
 
         		this.imgUrl = data;
+        		this._popup.setContent("<div style='width=90%%;text-align:center'>"+this.imgUrl+"</div>" + this.getPopupContent());
         	});
         });
         
