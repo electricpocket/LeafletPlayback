@@ -142,7 +142,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
         	var shipImgUrl = "http://boatbeaconapp.com/web-shipheaderfetch.php?width=150&height=75&userSubmit=0&mmsi="+mmsi+"&user=1234&registered=1";
         	$.get(shipImgUrl, function(data){
 
-        		marker.imgUrl = data;
+        		this.imgUrl = data;
         	});
         });
         
