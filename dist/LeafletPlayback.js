@@ -140,7 +140,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
 
         	var mmsi = this.feature.properties.ship.mmsi;
         	var shipImgUrl = "http://boatbeaconapp.com/web-shipheaderfetch.php?width=150&height=75&userSubmit=0&mmsi="+mmsi+"&user=1234&registered=1";
-        	$.get(shipImgUrl, function(data){
+        	$.get(shipImgUrl, function(this, data){
 
         		this.imgUrl = data;
         		this._popup.setContent("<div style='width=90%%;text-align:center'>"+this.imgUrl+"</div>" + this.getPopupContent());
