@@ -143,7 +143,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
         return '';
     },
 
-    move: function (latLng, transitionTime) {
+    move: function (latLng, transitionTime,mystatus) {
         // Only if CSS3 transitions are supported
         if (L.DomUtil.TRANSITION) {
             if (this._icon) { 
@@ -157,7 +157,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
         }
         this.setLatLng(latLng);
         if (this._popup) {
-            this._popup.setContent(this.getPopupContent() + this._latlng.toString());
+            this._popup.setContent(this.getPopupContent() + this._latlng.toString() + "\nsog=" +  mystatus.sog);
         }    
     },
     
@@ -458,7 +458,12 @@ L.Playback.Track = L.Class.extend({
             if (timestamp < this._startTime)
                 timestamp = this._startTime;
             //return this._orientations[timestamp];
-            return this._status[timestamp].hdg;
+            if (this._status[timestamp].hdg >= 0 && |this._status[timestamp].hdg <  360)
+            	return this._status[timestamp].hdg;
+            else if (this._status[timestamp].sog >= 0.2 && this._status[timestamp].cog >= 0 && |this._status[timestamp].cog <  360)
+            	return this._status[timestamp].cog;
+            else return this._orientations[timestamp];
+            	
         },
         
         statusAtTime: function(timestamp)
@@ -521,7 +526,7 @@ L.Playback.Track = L.Class.extend({
                     this._marker.setIconAngle(this.courseAtTime(timestamp));
                 }
 				
-                this._marker.move(latLng, transitionTime);
+                this._marker.move(latLng, transitionTime,this._status[timestamp]);
             }
         },
         
