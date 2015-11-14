@@ -1023,11 +1023,11 @@ L.Playback = L.Playback.Clock.extend({
 
         },
         
-        getLayer: function() {
+        getLayer : function() {
         	return this._tracksLayer;
         }
         
-        clearData : function(){
+        clearData : function() {
             this._trackController.clearTracks();
             
             if (this._tracksLayer) {
