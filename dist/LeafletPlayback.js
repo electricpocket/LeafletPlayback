@@ -1004,7 +1004,13 @@ L.Playback = L.Playback.Clock.extend({
                 this._tracksLayer = new L.Playback.TracksLayer(map, options);
             }
 
-            this.setData(geoJSON);            
+            this.setData(geoJSON);    
+            
+            this.controlSearch = new L.Control.Search({layer: this._tracksLayer, initial: false});
+
+            this.controlSearch.on('search_locationfound', function(event) {
+                event.layer.openPopup();
+            });
             
 
             if (this.options.playControl) {
