@@ -139,11 +139,12 @@ L.Playback.MoveableMarker = L.Marker.extend({
         this.on("popupopen",function(e){
 
         	var mmsi = this.feature.properties.ship.mmsi;
+        	var thisShipMarker = this;
         	var shipImgUrl = "http://boatbeaconapp.com/web-shipheaderfetch.php?width=150&height=75&userSubmit=0&mmsi="+mmsi+"&user=1234&registered=1";
         	$.get(shipImgUrl, function( data){
 
-        		//this.imgUrl = data;
-        		//this._popup.setContent("<div style='width=90%%;text-align:center'>"+this.imgUrl+"</div>" + this.getPopupContent());
+        		thisShipMarker.imgUrl = data;
+        		thisShipMarker._popup.setContent("<div style='width=90%%;text-align:center'>"+this.imgUrl+"</div>" + this.getPopupContent());
         	});
         });
         
