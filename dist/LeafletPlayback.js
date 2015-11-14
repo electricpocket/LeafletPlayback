@@ -99,6 +99,9 @@ L.Playback = L.Playback || {};
 L.Playback.MoveableMarker = L.Marker.extend({    
     initialize: function (startLatLng, options, feature) {    
         var marker_options = options.marker || {};
+        
+        this.photoHtml='';
+        this.statusHtml='';
 
         if (jQuery.isFunction(marker_options)){        
             marker_options = marker_options(feature);
@@ -144,7 +147,8 @@ L.Playback.MoveableMarker = L.Marker.extend({
         	$.get(shipImgUrl, function( data){
 
         		thisShipMarker.imgUrl = data;
-        		thisShipMarker._popup.setContent("<div style='width=90%%;text-align:center'>"+thisShipMarker.imgUrl+"</div>" + thisShipMarker.getPopupContent());
+        		thisShipMarker.photoHtml = "<div style='width=90%%;text-align:center'>"+thisShipMarker.imgUrl+"</div>";
+        		thisShipMarker._popup.setContent(thisShipMarker.photoHtml + thisShipMarker.getPopupContent() + thisShipMarker.statusHtml);
         	});
         });
         
@@ -176,15 +180,22 @@ L.Playback.MoveableMarker = L.Marker.extend({
         	if (mystatus!== null && typeof( mystatus) !== 'undefined' && typeof( mystatus.sog)  !== 'undefined' )
         	{ 
         		var heading= mystatus.hdg;
+        		this.markerStatus=mystatus;
+        		this.statusHtml= this._latlng.toString() + "<br>sog:" +  mystatus.sog +  "hdg:" + mystatus.hdg + "cog:" + mystatus.cog;
         		
-        		this._popup.setContent(this.getPopupContent() + this._latlng.toString() + "<br>sog:" +  mystatus.sog +  "hdg:" + mystatus.hdg + "cog:" + mystatus.cog);
-        	}
+        		}
         	else
-        		this._popup.setContent(this.getPopupContent() + this._latlng.toString());
+        		{
+        		this.statusHtml=this._latlng.toString();
+        		
+        		
+        		}
+        	
+        	this._popup.setContent(this.photoHtml + this.getPopupContent() + this.statusHtml);
         }    
     },
     
-    // modify leaflet markers to add our roration code
+    // modify leaflet markers to add our rotation code
     /*
      * Based on comments by @runanet and @coomsie 
      * https://github.com/CloudMade/Leaflet/issues/386
