@@ -181,15 +181,15 @@ L.Playback.MoveableMarker = L.Marker.extend({
         	{ 
         		var heading= mystatus.hdg;
         		this.markerStatus=mystatus;
-        		this.statusHtml= this._latlng.toString() + "<br>sog:" +  mystatus.sog +  "hdg:" + mystatus.hdg + "cog:" + mystatus.cog;
+        		this.statusHtml= this._latlng.toString() + "<br>SOG:" +  mystatus.sog +  "Kts HDG: " + mystatus.hdg + "T COG: " + mystatus.cog + "T";
         		
-        		}
+        	}
         	else
-        		{
+        	{
         		this.statusHtml=this._latlng.toString();
         		
         		
-        		}
+        	}
         	
         	this._popup.setContent(this.photoHtml + this.getPopupContent() + this.statusHtml);
         }    
