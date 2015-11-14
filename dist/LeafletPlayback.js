@@ -1025,7 +1025,7 @@ L.Playback = L.Playback.Clock.extend({
         
         getLayer : function() {
         	return this._tracksLayer;
-        }
+        },
         
         clearData : function() {
             this._trackController.clearTracks();
