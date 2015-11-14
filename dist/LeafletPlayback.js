@@ -1012,6 +1012,8 @@ L.Playback = L.Playback.Clock.extend({
                 event.layer.openPopup();
             });
             
+            this.controlSearch.addTo(map);
+            
 
             if (this.options.playControl) {
                 this.playControl = new L.Playback.PlayControl(this);
