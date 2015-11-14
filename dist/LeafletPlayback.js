@@ -1049,7 +1049,12 @@ L.Playback = L.Playback.Clock.extend({
         
             if (geoJSON instanceof Array) {
                 for (var i = 0, len = geoJSON.length; i < len; i++) {
-                    this._trackController.addTrack(new L.Playback.Track(geoJSON[i], this.options), ms);
+                	var thisPlayer= this;
+                	setTimeout(function() {
+                		thisPlayer._trackController.addTrack(new L.Playback.Track(geoJSON[i], thisPlayer.options), ms);
+                	}, 0)
+                	
+                    //this._trackController.addTrack(new L.Playback.Track(geoJSON[i], this.options), ms);
                 }
             } else {
                 this._trackController.addTrack(new L.Playback.Track(geoJSON, this.options), ms);
