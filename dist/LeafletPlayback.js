@@ -1005,15 +1005,6 @@ L.Playback = L.Playback.Clock.extend({
             }
 
             this.setData(geoJSON);    
-            
-            this.controlSearch = new L.Control.Search({layer: this._tracksLayer, initial: false});
-
-            this.controlSearch.on('search_locationfound', function(event) {
-                event.layer.openPopup();
-            });
-            
-            this.controlSearch.addTo(map);
-            
 
             if (this.options.playControl) {
                 this.playControl = new L.Playback.PlayControl(this);
@@ -1031,6 +1022,10 @@ L.Playback = L.Playback.Clock.extend({
             }
 
         },
+        
+        getLayer: function() {
+        	return this._tracksLayer;
+        }
         
         clearData : function(){
             this._trackController.clearTracks();
