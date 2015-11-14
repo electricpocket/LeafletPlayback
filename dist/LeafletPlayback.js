@@ -144,7 +144,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
         	$.get(shipImgUrl, function( data){
 
         		thisShipMarker.imgUrl = data;
-        		thisShipMarker._popup.setContent("<div style='width=90%%;text-align:center'>"+this.imgUrl+"</div>" + this.getPopupContent());
+        		thisShipMarker._popup.setContent("<div style='width=90%%;text-align:center'>"+thisShipMarker.imgUrl+"</div>" + thisShipMarker.getPopupContent());
         	});
         });
         
