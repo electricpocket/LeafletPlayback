@@ -1049,8 +1049,8 @@ L.Playback = L.Playback.Clock.extend({
         
             if (geoJSON instanceof Array) {
                 for (var i = 0, len = geoJSON.length; i < len; i++) {
-                	var thisPlayer= this;
-                	var endlen=len -1;
+                	/*var thisPlayer= this;
+                	var endlen=geoJSON.length -1;
                 	var thisgeoJSON = geoJSON[i];
                 	var thisItem=i;
                 	setTimeout(function() {
@@ -1064,17 +1064,20 @@ L.Playback = L.Playback.Clock.extend({
                             } 
                 		}
                 	}, 0)
+                	*/
                 	
-                    //this._trackController.addTrack(new L.Playback.Track(geoJSON[i], this.options), ms);
+                    this._trackController.addTrack(new L.Playback.Track(geoJSON[i], this.options), ms);
                 }
             } else {
                 this._trackController.addTrack(new L.Playback.Track(geoJSON, this.options), ms);
-                this._map.fire('playback:set:data');
                 
-                if (this.options.tracksLayer) {
-                    this._tracksLayer.addLayer(geoJSON);
-                } 
             }
+            
+            this._map.fire('playback:set:data');
+            
+            if (this.options.tracksLayer) {
+                this._tracksLayer.addLayer(geoJSON);
+            } 
 
                              
         },
