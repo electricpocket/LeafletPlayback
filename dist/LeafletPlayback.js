@@ -262,7 +262,7 @@ L.Playback.Track = L.Class.extend({
             this._tickLen = tickLen;
             this._ticks = [];
             this._marker = null;
-			this._orientations = [];
+			//this._orientations = [];
 			this._status = [];
 			
             var sampleTimes = geoJSON.properties.time;
@@ -287,7 +287,7 @@ L.Playback.Track = L.Class.extend({
                 if (tmod !== 0)
                     t += tickLen - tmod;
                 this._ticks[t] = samples[0];
-				this._orientations[t] = 0;
+				//this._orientations[t] = 0;
 				this._status[t]=sampleStatus[0];
                 this._startTime = t;
                 this._endTime = t;
@@ -301,13 +301,13 @@ L.Playback.Track = L.Class.extend({
                 ratio = rem / (nextSampleTime - currSampleTime);
                 t += rem;
                 this._ticks[t] = this._interpolatePoint(currSample, nextSample, ratio);
-				this._orientations[t] = this._directionOfPoint(currSample,nextSample);
+				//this._orientations[t] = this._directionOfPoint(currSample,nextSample);
 				
-                previousOrientation = this._orientations[t];
+                //previousOrientation = this._orientations[t];
             } else {
                 this._ticks[t] = currSample;
-				this._orientations[t] = this._directionOfPoint(currSample,nextSample);
-                previousOrientation = this._orientations[t];
+				//this._orientations[t] = this._directionOfPoint(currSample,nextSample);
+                //previousOrientation = this._orientations[t];
             }
 
             this._startTime = t;
@@ -315,8 +315,8 @@ L.Playback.Track = L.Class.extend({
             while (t < nextSampleTime) {
                 ratio = (t - currSampleTime) / (nextSampleTime - currSampleTime);
                 this._ticks[t] = this._interpolatePoint(currSample, nextSample, ratio);
-				this._orientations[t] = this._directionOfPoint(currSample,nextSample);
-                previousOrientation = this._orientations[t];
+				//this._orientations[t] = this._directionOfPoint(currSample,nextSample);
+                //previousOrientation = this._orientations[t];
                 this._status[t]=sampleStatus[0];
                 t += tickLen;
             }
@@ -334,20 +334,25 @@ L.Playback.Track = L.Class.extend({
                     ratio = rem / (nextSampleTime - currSampleTime);
                     t += rem;
                     this._ticks[t] = this._interpolatePoint(currSample, nextSample, ratio);
-					if(nextSample){
-                        this._orientations[t] = this._directionOfPoint(currSample,nextSample);
-                        previousOrientation = this._orientations[t];
-                    } else {
-                        this._orientations[t] = previousOrientation;    
-                    }
-                } else {
-                    this._ticks[t] = currSample;
+                    /*
+                    
                     if(nextSample){
                         this._orientations[t] = this._directionOfPoint(currSample,nextSample);
                         previousOrientation = this._orientations[t];
                     } else {
                         this._orientations[t] = previousOrientation;    
                     }
+                    */
+                } else {
+                    this._ticks[t] = currSample;
+                    /*
+                    if(nextSample){
+                        this._orientations[t] = this._directionOfPoint(currSample,nextSample);
+                        previousOrientation = this._orientations[t];
+                    } else {
+                        this._orientations[t] = previousOrientation;    
+                    }
+                    */
                 }
 
                 t += tickLen;
@@ -356,22 +361,25 @@ L.Playback.Track = L.Class.extend({
                     this._status[t]=sampleStatus[i];
                     if (nextSampleTime - currSampleTime > options.maxInterpolationTime){
                         this._ticks[t] = currSample;
-                        
+                        /*
 						if(nextSample){
                             this._orientations[t] = this._directionOfPoint(currSample,nextSample);
                             previousOrientation = this._orientations[t];
                         } else {
                             this._orientations[t] = previousOrientation;    
                         }
+                        */
                     }
                     else {
                         this._ticks[t] = this._interpolatePoint(currSample, nextSample, ratio);
+						/*
 						if(nextSample) {
                             this._orientations[t] = this._directionOfPoint(currSample,nextSample);
                             previousOrientation = this._orientations[t];
                         } else {
                             this._orientations[t] = previousOrientation;    
                         }
+                        */
                     }
                     
                     t += tickLen;
@@ -496,7 +504,8 @@ L.Playback.Track = L.Class.extend({
             	return this._status[timestamp].hdg;
             else if (this._status[timestamp].sog >= 0.2 && this._status[timestamp].cog >= 0 && this._status[timestamp].cog <  360)
             	return this._status[timestamp].cog;
-            else return this._orientations[timestamp];
+            else return 0;
+            //else return this._orientations[timestamp];
             	
         },
         
