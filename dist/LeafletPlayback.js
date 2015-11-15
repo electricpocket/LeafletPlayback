@@ -810,10 +810,10 @@ L.Playback.TracksLayer = L.Class.extend({
             'GPS Tracks' : this.layer
         };
 
-        /*L.control.layers(null, overlayControl, {
+        L.control.layers(null, overlayControl, {
         //    collapsed : false
         }).addTo(map);
-        */
+        
     },
 
     // clear all geoJSON layers
