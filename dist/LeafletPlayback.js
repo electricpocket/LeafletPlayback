@@ -798,9 +798,18 @@ L.Playback.TracksLayer = L.Class.extend({
             layer_options = layer_options(feature);
         }
         
+        var geojsonMarkerOptions = {
+        	    radius: 2,
+        	    fillColor: "#ff7800",
+        	    color: "#000",
+        	    weight: 1,
+        	    opacity: 1,
+        	    fillOpacity: 0.8
+        	};
+        
         if (!layer_options.pointToLayer) {
             layer_options.pointToLayer = function (featureData, latlng) {
-                return new L.CircleMarker(latlng, { radius : 5 });
+                return new L.CircleMarker(latlng,geojsonMarkerOptions);
             };
         }
     
