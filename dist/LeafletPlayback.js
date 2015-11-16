@@ -1048,7 +1048,7 @@ L.Playback = L.Playback.Clock.extend({
 
         },
         
-        getMarkerLayer : function() {
+        getMarkersLayer : function() {
         	return this._trackController.markerLayer;
         },
         
