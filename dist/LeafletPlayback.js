@@ -588,6 +588,8 @@ L.Playback.TrackController = L.Class.extend({
         this.options = options || {};
     
         this._map = map;
+        
+        this.markerLayer = L.layerGroup();
 
         this._tracks = [];
 
@@ -638,7 +640,7 @@ L.Playback.TrackController = L.Class.extend({
         var marker = track.setMarker(timestamp, this.options);
 
         if (marker) {
-            marker.addTo(this._map);
+            marker.addTo(this._markerLayer); //this._map
             
             this._tracks.push(track);
         }            
@@ -798,7 +800,7 @@ L.Playback.TracksLayer = L.Class.extend({
             layer_options = layer_options(feature);
         }
         
-        var geojsonMarkerOptions = {
+        var geojsonTrackOptions = {
         	    radius: 2,
         	    fillColor: "#ff7800",
         	    color: "#000",
@@ -809,7 +811,7 @@ L.Playback.TracksLayer = L.Class.extend({
         
         if (!layer_options.pointToLayer) {
             layer_options.pointToLayer = function (featureData, latlng) {
-                return new L.CircleMarker(latlng,geojsonMarkerOptions);
+                return new L.CircleMarker(latlng,geojsonTrackOptions);
             };
         }
     
@@ -1025,6 +1027,8 @@ L.Playback = L.Playback.Clock.extend({
             }
 
             this.setData(geoJSON);    
+            
+            this._trackController.markerLayer.addTo(map);
 
             if (this.options.playControl) {
                 this.playControl = new L.Playback.PlayControl(this);
@@ -1040,11 +1044,12 @@ L.Playback = L.Playback.Clock.extend({
                 this.dateControl = new L.Playback.DateControl(this, options);
                 this.dateControl.addTo(map);
             }
+            
 
         },
         
-        getLayer : function() {
-        	return this._tracksLayer.layer;
+        getMarkerLayer : function() {
+        	return this._trackController.markerLayer;
         },
         
         clearData : function() {
