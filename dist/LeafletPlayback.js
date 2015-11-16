@@ -640,7 +640,7 @@ L.Playback.TrackController = L.Class.extend({
         var marker = track.setMarker(timestamp, this.options);
 
         if (marker) {
-            marker.addTo(this._markerLayer); //this._map
+            marker.addTo(this.markerLayer); //this._map
             
             this._tracks.push(track);
         }            
