@@ -111,6 +111,10 @@ L.Playback.MoveableMarker = L.Marker.extend({
         	}
         }
         
+        if (marker_options.getPopup){
+        	marker_options.title =   marker_options.getPopup(feature);            
+        }
+        
         L.Marker.prototype.initialize.call(this, startLatLng, marker_options);
         
         this.popupContent = '';
