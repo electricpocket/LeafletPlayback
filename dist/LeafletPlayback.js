@@ -114,7 +114,6 @@ L.Playback.MoveableMarker = L.Marker.extend({
         if (marker_options.getPopup){
         	marker_options.title =   marker_options.getPopup(feature);            
         }
-        mystatus!== null && typeof( mystatus) !== 'undefined'
         
         if (marker_options.title === null ||  typeof( marker_options.title) === 'undefined' || marker_options.title.length <= 0 )  marker_options.title = "Unknown";
         
