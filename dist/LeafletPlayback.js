@@ -807,12 +807,12 @@ L.Playback.TracksLayer = L.Class.extend({
         }
         
         var geojsonTrackOptions = {
-        	    radius: 2,
-        	    fillColor: "#ff7800",
-        	    color: "#000",
+        	    radius: 1,
+        	    fillColor: "#ff0000",
+        	    color: "#ff0000",
         	    weight: 1,
-        	    opacity: 1,
-        	    fillOpacity: 0.8
+        	    opacity: 0.6,
+        	    fillOpacity: 0.6
         	};
         
         if (!layer_options.pointToLayer) {
