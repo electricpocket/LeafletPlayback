@@ -851,7 +851,7 @@ L.Playback.NewTracksLayer = L.Class.extend({
          
      }
 
- }
+ },
  
  addTrack : function(geoJSON) {
 	 
