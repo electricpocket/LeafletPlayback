@@ -840,7 +840,7 @@ L.Playback.TracksLayer = L.Class.extend({
  },
 
  // add new geoJSON layer
- addLayers : function(geoJSON) {
+ addLayer : function(geoJSON) {
 	 if (geoJSON instanceof Array) {
          for (var i = 0, len = geoJSON.length; i < len; i++) {
         	 	
