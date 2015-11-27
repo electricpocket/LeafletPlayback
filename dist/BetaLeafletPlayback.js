@@ -855,7 +855,7 @@ L.Playback.TracksLayer = L.Class.extend({
  
  addTrack : function(geoJSON) {
 	 
-	 var boatTrack =  L.polyline([],{color: 'red', weight: 1});
+	 var boatTrack =  L.polyline([],{color: 'red', weight: 2, dasharray="2, 2"});
 	 var samples = geoJSON.geometry.coordinates;
 	 var numSamples = samples.length;
 	 var currSample,fixlat,fixlong,fixCenter;
