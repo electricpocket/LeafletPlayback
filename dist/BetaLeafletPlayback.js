@@ -800,7 +800,7 @@ L.Playback.Clock = L.Class.extend({
 //TODO: Add gps sensor offsets.
 L.Playback = L.Playback || {};
 
-L.Playback.NewTracksLayer = L.Class.extend({
+L.Playback.TracksLayer = L.Class.extend({
  initialize : function (map, options) {
      var layer_options = options.layer || {};
      
@@ -873,58 +873,7 @@ L.Playback.NewTracksLayer = L.Class.extend({
  }
 });
 
-// Simply shows all of the track points as circles.
-// TODO: Associate circle color with the marker color.
 
-L.Playback = L.Playback || {};
-
-L.Playback.TracksLayer = L.Class.extend({
-    initialize : function (map, options) {
-        var layer_options = options.layer || {};
-        
-        if (jQuery.isFunction(layer_options)){
-            layer_options = layer_options(feature);
-        }
-        
-        var geojsonTrackOptions = {
-        	    radius: 1,
-        	    fillColor: "#ff0000",
-        	    color: "#ff0000",
-        	    weight: 1,
-        	    opacity: 0.6,
-        	    fillOpacity: 0.6
-        	};
-        
-        if (!layer_options.pointToLayer) {
-            layer_options.pointToLayer = function (featureData, latlng) {
-                return new L.CircleMarker(latlng,geojsonTrackOptions);
-            };
-        }
-    
-        this.layer = new L.GeoJSON(null, layer_options);
-
-        var overlayControl = {
-            'GPS Tracks' : this.layer
-        };
-
-        L.control.layers(null, overlayControl, {
-        	collapsed : false //show it
-        }).addTo(map);
-        
-    },
-
-    // clear all geoJSON layers
-    clearLayer : function(){
-        for (var i in this.layer._layers) {
-            this.layer.removeLayer(this.layer._layers[i]);            
-        }
-    },
-
-    // add new geoJSON layer
-    addLayer : function(geoJSON) {
-        this.layer.addData(geoJSON);
-    }
-});
 L.Playback = L.Playback || {};
 
 L.Playback.DateControl = L.Control.extend({
@@ -1074,7 +1023,7 @@ L.Playback = L.Playback.Clock.extend({
             Clock : L.Playback.Clock,
             Util : L.Playback.Util,
             
-            TracksLayer : L.Playback.NewTracksLayer,
+            TracksLayer : L.Playback.TracksLayer,
             PlayControl : L.Playback.PlayControl,
             DateControl : L.Playback.DateControl,
             SliderControl : L.Playback.SliderControl
@@ -1109,7 +1058,7 @@ L.Playback = L.Playback.Clock.extend({
             L.Playback.Clock.prototype.initialize.call(this, this._trackController, callback, this.options);
             
             if (this.options.tracksLayer) {
-                this._tracksLayer = new L.Playback.NewTracksLayer(map, options);
+                this._tracksLayer = new L.Playback.TracksLayer(map, options);
             }
 
             this.setData(geoJSON);    
