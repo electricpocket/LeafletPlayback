@@ -810,17 +810,6 @@ L.Playback.TracksLayer = L.Class.extend({
          layer_options = layer_options(feature);
      }
      
-     var geojsonTrackOptions = {
-     	    radius: 1,
-     	    fillColor: "#ff0000",
-     	    color: "#ff0000",
-     	    weight: 1,
-     	    opacity: 0.6,
-     	    fillOpacity: 0.6
-     	};
-     
-     
- 
      
      var overlayControl = {
          'GPS Tracks' : this.layer
@@ -855,7 +844,7 @@ L.Playback.TracksLayer = L.Class.extend({
  
  addTrack : function(geoJSON) {
 	 
-	 var boatTrack =  L.polyline([],{color: 'red', weight: 2, dasharray: "2, 2"});
+	 var boatTrack =  L.polyline([],{color: 'red', weight: 2, dasharray: "2, 5"});
 	 var samples = geoJSON.geometry.coordinates;
 	 var numSamples = samples.length;
 	 var currSample,fixlat,fixlong,fixCenter;
@@ -868,6 +857,8 @@ L.Playback.TracksLayer = L.Class.extend({
 		 fixCenter = L.latLng(fixlat, fixlong );
 		 boatTrack.addLatLng(fixCenter);
 	 }
+	 
+	 //TODO: Add on click
 	 
 	 boatTrack.addTo(this.layer); 
  }
