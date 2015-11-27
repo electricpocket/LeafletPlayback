@@ -871,8 +871,6 @@ L.Playback.NewTracksLayer = L.Class.extend({
 	 
 	 boatTrack.addTo(this.layer); 
  }
-}
- 
 });
 
 // Simply shows all of the track points as circles.
