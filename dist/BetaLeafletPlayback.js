@@ -862,7 +862,7 @@ L.Playback.TracksLayer = L.Class.extend({
 	 
 	 for (var ii=0 ; ii < numSamples; ii++)
 	 {
-		 currSample=samples[i];
+		 currSample=samples[ii];
 		 fixlat =  currSample[1];
 		 fixlong =  currSample[0];
 		 fixCenter = L.latLng(fixlat, fixlong );
