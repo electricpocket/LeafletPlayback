@@ -1074,7 +1074,7 @@ L.Playback = L.Playback.Clock.extend({
             Clock : L.Playback.Clock,
             Util : L.Playback.Util,
             
-            TracksLayer : L.Playback.TracksLayer,
+            TracksLayer : L.Playback.NewTracksLayer,
             PlayControl : L.Playback.PlayControl,
             DateControl : L.Playback.DateControl,
             SliderControl : L.Playback.SliderControl
