@@ -871,6 +871,7 @@ L.Playback.NewTracksLayer = L.Class.extend({
 	 
 	 boatTrack.addTo(this.layer); 
  }
+}
  
 });
 
