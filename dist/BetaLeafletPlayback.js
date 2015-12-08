@@ -920,6 +920,12 @@ L.Playback.DateControl = L.Control.extend({
             self._time.innerHTML = self.options.timeFormatFn(ms);
             self._slider.value = ms;
         });
+        
+        map.on('playback:add_tracks', function() {
+            self._slider.min = playback.getStartTime();
+            self._slider.max = playback.getEndTime();
+            self._slider.value = playback.getTime();
+        });
 
         return this._container;
     }
@@ -929,11 +935,7 @@ L.Playback.DateControl = L.Control.extend({
         playback.setCursor(val);
     }
     
-    map.on('playback:add_tracks', function() {
-        self._slider.min = playback.getStartTime();
-        self._slider.max = playback.getEndTime();
-        self._slider.value = playback.getTime();
-    });
+    
 });
     
 L.Playback.PlayControl = L.Control.extend({
@@ -1158,7 +1160,7 @@ L.Playback = L.Playback.Clock.extend({
             	this.speedControl.addTo(map);
             }
 
-            if (this.options.sliderControl) {
+            if (false) //this.options.sliderControl) {
                 this.sliderControl = new L.Playback.SliderControl(this);
                 this.sliderControl.addTo(map);
             }
