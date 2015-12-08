@@ -1017,16 +1017,17 @@ L.Playback.SpeedControl = L.Control.extend({
 
     onAdd : function (map) {
         this._container = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control-layers-expanded');
-        var speedValue = L.DomUtil.create('div', 'speedControl', this._container);
-
-        // date time
-        this._speed = L.DomUtil.create('p', '', speedValue);
        
-        this._speed.innerHTML = playback.getSpeed();
-
         var self = this;
         var playback = this.playback;
         playback.setSpeed(playback.options.speed);
+        
+      
+        // speed value
+        var speedValue = L.DomUtil.create('div', 'speedControl', this._container);
+        this._speed = L.DomUtil.create('p', '', speedValue);       
+        this._speed.innerHTML = playback.getSpeed();
+
 
         // slider
         this._slider = L.DomUtil.create('input', 'slider', this._container);
