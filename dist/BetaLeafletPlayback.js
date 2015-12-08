@@ -1115,15 +1115,17 @@ L.Playback = L.Playback.Clock.extend({
             
             this._trackController.markerLayer.addTo(map);
             
-            if (this.options.speed)
-            {
-            	this.speedControl = new L.Playback.SpeedControl(this);
-            	this.speedControl.addTo(map);
-            }
+          
 
             if (this.options.playControl) {
                 this.playControl = new L.Playback.PlayControl(this);
                 this.playControl.addTo(map);
+            }
+            
+            if (this.options.speed)
+            {
+            	this.speedControl = new L.Playback.SpeedControl(this);
+            	this.speedControl.addTo(map);
             }
 
             if (this.options.sliderControl) {
