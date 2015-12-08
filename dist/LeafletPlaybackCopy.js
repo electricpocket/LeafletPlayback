@@ -271,6 +271,7 @@ L.Playback.Track = L.Class.extend({
 			//this._orientations = [];
 			this._status = [];
 			
+			
             var sampleTimes = geoJSON.properties.time;
             var sampleStatus = geoJSON.properties.status;//associative array of hdng,sog,cog and status
 			
@@ -334,6 +335,7 @@ L.Playback.Track = L.Class.extend({
                 t = currSampleTime = sampleTimes[i];
                 nextSampleTime = sampleTimes[i + 1];
                 this._status[t]=sampleStatus[i];
+                
                 tmod = t % tickLen;
                 if (tmod !== 0 && nextSampleTime) {
                     rem = tickLen - tmod;
@@ -793,58 +795,76 @@ L.Playback.Clock = L.Class.extend({
 
 });
 
-// Simply shows all of the track points as circles.
-// TODO: Associate circle color with the marker color.
-
+//Simply shows all of the track points as polylines
+//TODO: Associate circle color with the marker color.
+//TODO: Add gps sensor offsets.
 L.Playback = L.Playback || {};
 
 L.Playback.TracksLayer = L.Class.extend({
-    initialize : function (map, options) {
-        var layer_options = options.layer || {};
-        
-        if (jQuery.isFunction(layer_options)){
-            layer_options = layer_options(feature);
-        }
-        
-        var geojsonTrackOptions = {
-        	    radius: 1,
-        	    fillColor: "#ff0000",
-        	    color: "#ff0000",
-        	    weight: 1,
-        	    opacity: 0.6,
-        	    fillOpacity: 0.6
-        	};
-        
-        if (!layer_options.pointToLayer) {
-            layer_options.pointToLayer = function (featureData, latlng) {
-                return new L.CircleMarker(latlng,geojsonTrackOptions);
-            };
-        }
-    
-        this.layer = new L.GeoJSON(null, layer_options);
+ initialize : function (map, options) {
+     var layer_options = options.layer || {};
+     
+     this.layer = new L.FeatureGroup();
+		 
+     if (jQuery.isFunction(layer_options)){
+         layer_options = layer_options(feature);
+     }
+     
+     
+     var overlayControl = {
+         'GPS Tracks' : this.layer
+     };
 
-        var overlayControl = {
-            'GPS Tracks' : this.layer
-        };
+     L.control.layers(null, overlayControl, {
+     	collapsed : false //show it
+     }).addTo(map);
+     
+ },
 
-        L.control.layers(null, overlayControl, {
-        	collapsed : false //show it
-        }).addTo(map);
-        
-    },
+ // clear all geoJSON layers
+ clearLayer : function(){
+     for (var i in this.layer._layers) {
+         this.layer.removeLayer(this.layer._layers[i]);            
+     }
+ },
 
-    // clear all geoJSON layers
-    clearLayer : function(){
-        for (var i in this.layer._layers) {
-            this.layer.removeLayer(this.layer._layers[i]);            
-        }
-    },
+ // add new geoJSON layer
+ addLayer : function(geoJSON) {
+	 if (geoJSON instanceof Array) {
+         for (var i = 0, len = geoJSON.length; i < len; i++) {
+        	 	
+        	 this.addTrack(geoJSON[i]);
+         }
+     } else {
+         this.addTrack(geoJSON);
+         
+     }
 
-    // add new geoJSON layer
-    addLayer : function(geoJSON) {
-        this.layer.addData(geoJSON);
-    }
+ },
+ 
+ addTrack : function(geoJSON) {
+	 
+	 var boatTrack =  L.polyline([],{color: 'red', weight: 2, dasharray: "2, 5"});
+	 var samples = geoJSON.geometry.coordinates;
+	 var numSamples = samples.length;
+	 var currSample,fixlat,fixlong,fixCenter;
+	 
+	 for (var ii=0 ; ii < numSamples; ii++)
+	 {
+		 currSample=samples[ii];
+		 fixlat =  currSample[1];
+		 fixlong =  currSample[0];
+		 fixCenter = L.latLng(fixlat, fixlong );
+		 boatTrack.addLatLng(fixCenter);
+	 }
+	 
+	 //TODO: Add on click
+	 
+	 boatTrack.addTo(this.layer); 
+ }
 });
+
+
 L.Playback = L.Playback || {};
 
 L.Playback.DateControl = L.Control.extend({
