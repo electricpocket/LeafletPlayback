@@ -913,7 +913,10 @@ L.Playback.DateControl = L.Control.extend({
         .on(this._slider, 'change', onSliderChange, this)
         .on(this._slider, 'mousemove', onSliderChange, this);  
         
- 
+        function onSliderChange(e) {
+            var val = Number(e.target.value);
+            playback.setCursor(val);
+        }
         // setup callback
         playback.addCallback(function (ms) {
             self._date.innerHTML = self.options.dateFormatFn(ms);
@@ -930,10 +933,7 @@ L.Playback.DateControl = L.Control.extend({
         return this._container;
     }
     
-    function onSliderChange(e) {
-        var val = Number(e.target.value);
-        playback.setCursor(val);
-    }
+    
     
     
 });
