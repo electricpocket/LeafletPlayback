@@ -50,7 +50,7 @@ L.Playback.Util = L.Class.extend({
           return (norm < 10 ? '0' : '') + norm;
       };
       
-      return h + ':' + m + ':' + s + dec + ' ' + mer + dif + pad(tzo / 60) 
+      return h + ':' + m + ':' + s + ' ' + mer + dif + pad(tzo / 60) 
       + ':' + pad(tzo % 60);;
     },
 
@@ -1026,8 +1026,7 @@ L.Playback.SpeedControl = L.Control.extend({
         // speed value
         var speedValue = L.DomUtil.create('div', 'speedControl', this._container);
         this._speed = L.DomUtil.create('p', '', speedValue);     
-        this._speed.innerHTML = "Playback speed: "+playback.getSpeed()+"x";
-
+        this._speed.innerHTML = "Playback speed: x"+playback.getSpeed();
 
         // slider
         this._slider = L.DomUtil.create('input', 'slider', this._container);
@@ -1051,7 +1050,7 @@ L.Playback.SpeedControl = L.Control.extend({
         function onSliderChange(e) {
             var val = Number(e.target.value);
             playback.setSpeed(val);
-            this._speed.innerHTML = "Playback speed: "+playback.getSpeed()+"x";
+            this._speed.innerHTML = "Playback speed: x"+playback.getSpeed();
         }
 
 
