@@ -1004,7 +1004,57 @@ L.Playback.SliderControl = L.Control.extend({
 
         return this._container;
     }
-});      
+});     
+
+L.Playback.SpeedControl = L.Control.extend({
+    options : {
+        position : 'bottomleft'
+    },
+
+    initialize : function (playback) {
+        this.playback = playback;
+    },
+
+    onAdd : function (map) {
+        this._container = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control-layers-expanded');
+
+        var self = this;
+        var playback = this.playback;
+
+        // slider
+        this._slider = L.DomUtil.create('input', 'slider', this._container);
+        this._slider.type = 'range';
+        this._slider.min = 1;
+        this._slider.max = 30;
+        this._slider.value = playback.Clock.getSpeed();
+
+        var stop = L.DomEvent.stopPropagation;
+
+        L.DomEvent
+        .on(this._slider, 'click', stop)
+        .on(this._slider, 'mousedown', stop)
+        .on(this._slider, 'dblclick', stop)
+        .on(this._slider, 'click', L.DomEvent.preventDefault)
+        //.on(this._slider, 'mousemove', L.DomEvent.preventDefault)
+        .on(this._slider, 'change', onSliderChange, this)
+        .on(this._slider, 'mousemove', onSliderChange, this);           
+
+
+        function onSliderChange(e) {
+            var val = Number(e.target.value);
+            playback.Clock.setSpeed(val);
+        }
+
+
+        map.on('playback:add_tracks', function() {
+            self._slider.min = 1;
+            self._slider.max = 30;
+            self._slider.value = playback.Clock.getSpeed();
+        });
+
+        return this._container;
+    }
+});     
 
 L.Playback = L.Playback.Clock.extend({
         statics : {
@@ -1017,7 +1067,8 @@ L.Playback = L.Playback.Clock.extend({
             TracksLayer : L.Playback.TracksLayer,
             PlayControl : L.Playback.PlayControl,
             DateControl : L.Playback.DateControl,
-            SliderControl : L.Playback.SliderControl
+            SliderControl : L.Playback.SliderControl,
+            SpeedControl : L.Playback.SpeedControl
         },
 
         options : {
@@ -1070,6 +1121,9 @@ L.Playback = L.Playback.Clock.extend({
                 this.dateControl = new L.Playback.DateControl(this, options);
                 this.dateControl.addTo(map);
             }
+            
+            this.speedControl = new L.Playback.SpeedControl(this);
+            this.speedControl.addTo(map);
             
 
         },
