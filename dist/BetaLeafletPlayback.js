@@ -1160,7 +1160,8 @@ L.Playback = L.Playback.Clock.extend({
             	this.speedControl.addTo(map);
             }
 
-            if (false) //this.options.sliderControl) {
+            if (false) //this.options.sliderControl) 
+            {
                 this.sliderControl = new L.Playback.SliderControl(this);
                 this.sliderControl.addTo(map);
             }
