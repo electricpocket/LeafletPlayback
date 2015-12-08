@@ -50,7 +50,7 @@ L.Playback.Util = L.Class.extend({
           return (norm < 10 ? '0' : '') + norm;
       };
       
-      return h + ':' + m + ':' + s + dec + ' ' + mer + dif + pad(tzo / 60) 
+      return h + ':' + m + ':' + s + ' ' + mer + dif + pad(tzo / 60) 
       + ':' + pad(tzo % 60);;
     },
 
@@ -1004,7 +1004,64 @@ L.Playback.SliderControl = L.Control.extend({
 
         return this._container;
     }
-});      
+});     
+
+L.Playback.SpeedControl = L.Control.extend({
+    options : {
+        position : 'bottomleft'
+    },
+
+    initialize : function (playback) {
+        this.playback = playback;
+    },
+
+    onAdd : function (map) {
+        this._container = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control-layers-expanded');
+       
+        var self = this;
+        var playback = this.playback;
+        playback.setSpeed(playback.options.speed);
+        
+      
+        // speed value
+        var speedValue = L.DomUtil.create('div', 'speedControl', this._container);
+        this._speed = L.DomUtil.create('p', '', speedValue);     
+        this._speed.innerHTML = "Playback speed: x"+playback.getSpeed();
+
+        // slider
+        this._slider = L.DomUtil.create('input', 'slider', this._container);
+        this._slider.type = 'range';
+        this._slider.min = 1;
+        this._slider.max = 1000;
+        this._slider.value = playback.getSpeed();
+
+        var stop = L.DomEvent.stopPropagation;
+
+        L.DomEvent
+        .on(this._slider, 'click', stop)
+        .on(this._slider, 'mousedown', stop)
+        .on(this._slider, 'dblclick', stop)
+        .on(this._slider, 'click', L.DomEvent.preventDefault)
+        //.on(this._slider, 'mousemove', L.DomEvent.preventDefault)
+        .on(this._slider, 'change', onSliderChange, this)
+        .on(this._slider, 'mousemove', onSliderChange, this);           
+
+
+        function onSliderChange(e) {
+            var val = Number(e.target.value);
+            playback.setSpeed(val);
+            this._speed.innerHTML = "Playback speed: x"+playback.getSpeed();
+        }
+
+
+        map.on('playback:add_tracks', function() {
+           
+          
+        });
+
+        return this._container;
+    }
+});     
 
 L.Playback = L.Playback.Clock.extend({
         statics : {
@@ -1017,7 +1074,8 @@ L.Playback = L.Playback.Clock.extend({
             TracksLayer : L.Playback.TracksLayer,
             PlayControl : L.Playback.PlayControl,
             DateControl : L.Playback.DateControl,
-            SliderControl : L.Playback.SliderControl
+            SliderControl : L.Playback.SliderControl,
+            SpeedControl : L.Playback.SpeedControl
         },
 
         options : {
@@ -1055,10 +1113,18 @@ L.Playback = L.Playback.Clock.extend({
             this.setData(geoJSON);    
             
             this._trackController.markerLayer.addTo(map);
+            
+          
 
             if (this.options.playControl) {
                 this.playControl = new L.Playback.PlayControl(this);
                 this.playControl.addTo(map);
+            }
+            
+            if (this.options.speed)
+            {
+            	this.speedControl = new L.Playback.SpeedControl(this);
+            	this.speedControl.addTo(map);
             }
 
             if (this.options.sliderControl) {
@@ -1070,6 +1136,7 @@ L.Playback = L.Playback.Clock.extend({
                 this.dateControl = new L.Playback.DateControl(this, options);
                 this.dateControl.addTo(map);
             }
+            
             
 
         },
@@ -1146,6 +1213,9 @@ L.Playback = L.Playback.Clock.extend({
             }
             if (this.dateControl) {
                 this._map.removeControl(this.dateControl);
+            }
+            if (this.speedControl) {
+                this._map.removeControl(this.speedControl);
             }
         }
     });
