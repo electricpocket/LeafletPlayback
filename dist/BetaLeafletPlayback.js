@@ -1017,6 +1017,12 @@ L.Playback.SpeedControl = L.Control.extend({
 
     onAdd : function (map) {
         this._container = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control-layers-expanded');
+        var speedValue = L.DomUtil.create('div', 'speedControl', this._container);
+
+        // date time
+        this._speed = L.DomUtil.create('p', '', speedValue);
+       
+        this._speed.innerHTML = playback.getSpeed();
 
         var self = this;
         var playback = this.playback;
@@ -1044,6 +1050,7 @@ L.Playback.SpeedControl = L.Control.extend({
         function onSliderChange(e) {
             var val = Number(e.target.value);
             playback.setSpeed(val);
+            this._speed.innerHTML = playback.getSpeed();
         }
 
 
@@ -1106,6 +1113,12 @@ L.Playback = L.Playback.Clock.extend({
             this.setData(geoJSON);    
             
             this._trackController.markerLayer.addTo(map);
+            
+            if (this.options.speed)
+            {
+            	this.speedControl = new L.Playback.SpeedControl(this);
+            	this.speedControl.addTo(map);
+            }
 
             if (this.options.playControl) {
                 this.playControl = new L.Playback.PlayControl(this);
@@ -1121,11 +1134,7 @@ L.Playback = L.Playback.Clock.extend({
                 this.dateControl = new L.Playback.DateControl(this, options);
                 this.dateControl.addTo(map);
             }
-            if (this.options.speed)
-            {
-            	this.speedControl = new L.Playback.SpeedControl(this);
-            	this.speedControl.addTo(map);
-            }
+            
             
 
         },
@@ -1202,6 +1211,9 @@ L.Playback = L.Playback.Clock.extend({
             }
             if (this.dateControl) {
                 this._map.removeControl(this.dateControl);
+            }
+            if (this.speedControl) {
+                this._map.removeControl(this.speedControl);
             }
         }
     });
