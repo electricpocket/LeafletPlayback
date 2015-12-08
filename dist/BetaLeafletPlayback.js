@@ -1020,13 +1020,14 @@ L.Playback.SpeedControl = L.Control.extend({
 
         var self = this;
         var playback = this.playback;
+        playback.setSpeed(playback.options.speed);
 
         // slider
         this._slider = L.DomUtil.create('input', 'slider', this._container);
         this._slider.type = 'range';
         this._slider.min = 1;
-        this._slider.max = 30;
-        this._slider.value = playback.Clock.getSpeed();
+        this._slider.max = 1000;
+        this._slider.value = playback.getSpeed();
 
         var stop = L.DomEvent.stopPropagation;
 
@@ -1042,14 +1043,13 @@ L.Playback.SpeedControl = L.Control.extend({
 
         function onSliderChange(e) {
             var val = Number(e.target.value);
-            playback.Clock.setSpeed(val);
+            playback.setSpeed(val);
         }
 
 
         map.on('playback:add_tracks', function() {
-            self._slider.min = 1;
-            self._slider.max = 30;
-            self._slider.value = playback.Clock.getSpeed();
+           
+          
         });
 
         return this._container;
@@ -1121,9 +1121,11 @@ L.Playback = L.Playback.Clock.extend({
                 this.dateControl = new L.Playback.DateControl(this, options);
                 this.dateControl.addTo(map);
             }
-            
-            this.speedControl = new L.Playback.SpeedControl(this);
-            this.speedControl.addTo(map);
+            if (this.options.speed)
+            {
+            	this.speedControl = new L.Playback.SpeedControl(this);
+            	this.speedControl.addTo(map);
+            }
             
 
         },
