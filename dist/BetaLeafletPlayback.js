@@ -1025,8 +1025,8 @@ L.Playback.SpeedControl = L.Control.extend({
       
         // speed value
         var speedValue = L.DomUtil.create('div', 'speedControl', this._container);
-        this._speed = L.DomUtil.create('p', '', speedValue);       
-        this._speed.innerHTML = playback.getSpeed();
+        this._speed = L.DomUtil.create('p', '', speedValue);     
+        this._speed.innerHTML "Playback speed: "+playback.getSpeed()+"x";
 
 
         // slider
@@ -1051,7 +1051,7 @@ L.Playback.SpeedControl = L.Control.extend({
         function onSliderChange(e) {
             var val = Number(e.target.value);
             playback.setSpeed(val);
-            this._speed.innerHTML = playback.getSpeed();
+            this._speed.innerHTML "Playback speed: "+playback.getSpeed()+"x";
         }
 
 
