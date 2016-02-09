@@ -1182,9 +1182,9 @@ L.Playback = L.Playback.Clock.extend({
         getMarkers: function() {
         	var all_markers = [];
         	var all_tracks = this._trackController.getTracks();
-        	for (var atrack in all_tracks)
+        	for (var i =0; i < all_tracks.length;i++)
         	{
-        		this._track = atrack;
+        		this._track = all_tracks[i];
         		var amarker = this._track.getMarker();
         		markers.push(amarker);
         	}
