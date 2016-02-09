@@ -1186,7 +1186,7 @@ L.Playback = L.Playback.Clock.extend({
         	{
         		this._track = all_tracks[i];
         		var amarker = this._track.getMarker();
-        		markers.push(amarker);
+        		all_markers.push(amarker);
         	}
 
         	return all_markers;
