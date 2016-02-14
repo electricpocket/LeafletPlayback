@@ -65,6 +65,24 @@ L.Playback = L.Playback.Clock.extend({
 
         },
         
+        
+        getMarkersLayer : function() {
+        	return this._trackController.markerLayer;
+        },
+        
+        getMarkers: function() {
+        	var all_markers = [];
+        	var all_tracks = this._trackController.getTracks();
+        	for (var i =0; i < all_tracks.length;i++)
+        	{
+        		this._track = all_tracks[i];
+        		var amarker = this._track.getMarker();
+        		all_markers.push(amarker);
+        	}
+
+        	return all_markers;
+        },
+        
         clearData : function(){
             this._trackController.clearTracks();
             
@@ -90,17 +108,37 @@ L.Playback = L.Playback.Clock.extend({
         
             if (geoJSON instanceof Array) {
                 for (var i = 0, len = geoJSON.length; i < len; i++) {
+                	/*var thisPlayer= this;
+                	var endlen=geoJSON.length -1;
+                	var thisgeoJSON = geoJSON[i];
+                	var thisItem=i;
+                	setTimeout(function() {
+                		thisPlayer._trackController.addTrack(new L.Playback.Track(thisgeoJSON, thisPlayer.options), ms);
+                		if  (thisItem==endlen)
+                		{
+                			thisPlayer._map.fire('playback:set:data');
+                            
+                            if (thisPlayer.options.tracksLayer) {
+                            	thisPlayer._tracksLayer.addLayer(geoJSON);
+                            } 
+                		}
+                	}, 0)
+                	*/
+                	
                     this._trackController.addTrack(new L.Playback.Track(geoJSON[i], this.options), ms);
                 }
             } else {
                 this._trackController.addTrack(new L.Playback.Track(geoJSON, this.options), ms);
+                
             }
-
+            
             this._map.fire('playback:set:data');
             
             if (this.options.tracksLayer) {
                 this._tracksLayer.addLayer(geoJSON);
-            }                  
+            } 
+
+                             
         },
 
         destroy: function() {
