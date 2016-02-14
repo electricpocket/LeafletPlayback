@@ -1179,6 +1179,19 @@ L.Playback = L.Playback.Clock.extend({
         	return this._trackController.markerLayer;
         },
         
+        getMarkers: function() {
+        	var all_markers = [];
+        	var all_tracks = this._trackController.getTracks();
+        	for (var i =0; i < all_tracks.length;i++)
+        	{
+        		this._track = all_tracks[i];
+        		var amarker = this._track.getMarker();
+        		all_markers.push(amarker);
+        	}
+
+        	return all_markers;
+        },
+        
         clearData : function() {
             this._trackController.clearTracks();
             
