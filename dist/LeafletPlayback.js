@@ -187,7 +187,7 @@ L.Playback.MoveableMarker = L.Marker.extend({
         	{ 
         		var heading= mystatus.hdg;
         		this.markerStatus=mystatus;
-        		this.statusHtml= this._latlng.toString() + "<br>SOG:" +  mystatus.sog +  "Kts HDG: " + mystatus.hdg + "T COG: " + mystatus.cog + "T";
+        		this.statusHtml= this._latlng.toString() + "<br>SOG:" +  mystatus.sog +  "Kts HDG: " + mystatus.hdg + "T COG: " + mystatus.cog + "T"+ " STATUS: " + mystatus.status;
         		
         	}
         	else
