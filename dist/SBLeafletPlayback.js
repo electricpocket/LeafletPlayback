@@ -803,6 +803,7 @@ L.Playback = L.Playback || {};
 L.Playback.TracksLayer = L.Class.extend({
  initialize : function (map, options) {
      var layer_options = options.layer || {};
+	 let layerControl;
      
      this.layer = new L.FeatureGroup();
 		 
@@ -815,7 +816,7 @@ L.Playback.TracksLayer = L.Class.extend({
          'GPS Tracks' : this.layer
      };
 
-     L.control.layers(null, overlayControl, {
+     layerControl = L.control.layers(null, overlayControl, {
      	collapsed : false //show it
      }).addTo(map);
      
@@ -861,7 +862,12 @@ L.Playback.TracksLayer = L.Class.extend({
 	 //TODO: Add on click
 	 
 	 boatTrack.addTo(this.layer); 
- }
+ },
+deleteControl : function(){
+    layerControl.remove() // <--- here i call the remove method and i can erase the Gps tracks control simply calling 
+                                         //deleteControl() function
+}
+
 });
 
 
