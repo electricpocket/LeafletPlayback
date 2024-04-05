@@ -41,8 +41,7 @@ L.Playback.Util = L.Class.extend({
       } 
       if (h === 0) h = 12;
       if (m < 10) m = '0' + m;
-      if (s < 10) s = '0' + s;
-      
+      if (s < 10) s = '0' + s;     
       tzo = -d.getTimezoneOffset(),
       dif = tzo >= 0 ? '+' : '-',
       pad = function(num) {
@@ -799,11 +798,9 @@ L.Playback.Clock = L.Class.extend({
 //TODO: Associate circle color with the marker color.
 //TODO: Add gps sensor offsets.
 L.Playback = L.Playback || {};
-
 L.Playback.TracksLayer = L.Class.extend({
  initialize : function (map, options) {
      var layer_options = options.layer || {};
-	 let layerControl;
      
      this.layer = new L.FeatureGroup();
 		 
@@ -816,7 +813,7 @@ L.Playback.TracksLayer = L.Class.extend({
          'GPS Tracks' : this.layer
      };
 
-     layerControl = L.control.layers(null, overlayControl, {
+     gpsTrackslayerControl = L.control.layers(null, overlayControl, {
      	collapsed : false //show it
      }).addTo(map);
      
@@ -844,8 +841,13 @@ L.Playback.TracksLayer = L.Class.extend({
  },
  
  addTrack : function(geoJSON) {
-	 
-	 var boatTrack =  L.polyline([],{color: 'red', weight: 2, dasharray: "2, 5"});
+	var colour = 'red';
+	var shipJson = geoJSON.properties.ship;
+        if (raceTrack == 1) {
+        	shipJson.group = group;
+        	colour = getShipTypeColorForGeoJson(shipJson)
+        }	 
+	 var boatTrack =  L.polyline([],{color: colour, weight: 2, dasharray: "2, 5"});
 	 var samples = geoJSON.geometry.coordinates;
 	 var numSamples = samples.length;
 	 var currSample,fixlat,fixlong,fixCenter;
@@ -864,7 +866,7 @@ L.Playback.TracksLayer = L.Class.extend({
 	 boatTrack.addTo(this.layer); 
  },
 deleteControl : function(){
-    layerControl.remove() // <--- here i call the remove method and i can erase the Gps tracks control simply calling 
+      gpsTrackslayerControl.remove() // <--- here i call the remove method and i can erase the Gps tracks control simply calling 
                                          //deleteControl() function
 }
 
@@ -1140,7 +1142,6 @@ L.Playback = L.Playback.Clock.extend({
 
         initialize : function (map, geoJSON, callback, options) {
             L.setOptions(this, options);
-            
             this._map = map;
             this._trackController = new L.Playback.TrackController(map, null, this.options);
             L.Playback.Clock.prototype.initialize.call(this, this._trackController, callback, this.options);
