@@ -801,6 +801,7 @@ L.Playback = L.Playback || {};
 L.Playback.TracksLayer = L.Class.extend({
  initialize : function (map, options) {
      var layer_options = options.layer || {};
+//see https://github.com/hallahan/LeafletPlayback/issues/38  
      this.layerControl = null;
      this.layer = new L.FeatureGroup();
 		 
@@ -1258,6 +1259,7 @@ L.Playback = L.Playback.Clock.extend({
 
         destroy: function() {
 	    if (this._tracksLayer) {
+//see https://github.com/hallahan/LeafletPlayback/issues/38  
 		if (this._tracksLayer.layerControl) {
 			this._map.removeControl(this._tracksLayer.layerControl);
 		}
