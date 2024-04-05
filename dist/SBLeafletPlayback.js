@@ -801,7 +801,7 @@ L.Playback = L.Playback || {};
 L.Playback.TracksLayer = L.Class.extend({
  initialize : function (map, options) {
      var layer_options = options.layer || {};
-     
+     this.layerControl = null;
      this.layer = new L.FeatureGroup();
 		 
      if (jQuery.isFunction(layer_options)){
@@ -813,7 +813,7 @@ L.Playback.TracksLayer = L.Class.extend({
          'GPS Tracks' : this.layer
      };
 
-     gpsTrackslayerControl = L.control.layers(null, overlayControl, {
+     this.layerControl = L.control.layers(null, overlayControl, {
      	collapsed : false //show it
      }).addTo(map);
      
@@ -866,7 +866,7 @@ L.Playback.TracksLayer = L.Class.extend({
 	 boatTrack.addTo(this.layer); 
  },
 deleteControl : function(){
-      gpsTrackslayerControl.remove() // <--- here i call the remove method and i can erase the Gps tracks control simply calling 
+      this.layerControl.remove() // <--- here i call the remove method and i can erase the Gps tracks control simply calling 
                                          //deleteControl() function
 }
 
@@ -1201,7 +1201,6 @@ L.Playback = L.Playback.Clock.extend({
         
         clearData : function() {
             this._trackController.clearTracks();
-            
             if (this._tracksLayer) {
                 this._tracksLayer.clearLayer();
             }
@@ -1258,6 +1257,11 @@ L.Playback = L.Playback.Clock.extend({
         },
 
         destroy: function() {
+	    if (this._tracksLayer) {
+		if (this._tracksLayer.layerControl) {
+			this._map.removeControl(this._tracksLayer.layerControl);
+		}
+	    }
             this.clearData();
             if (this.playControl) {
                 this._map.removeControl(this.playControl);
